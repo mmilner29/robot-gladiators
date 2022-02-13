@@ -93,10 +93,17 @@ var fightOrSkip = function() {
 
 // fight function (now with parameter for enemy's name)
 var fight = function(enemy) {
-  while (playerInfo.health > 0 && enemy.health > 0) {
+  //keep track of who goes first
+  var isPlayerTurn = true;
 
+  if(Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
+
+  while (playerInfo.health > 0 && enemy.health > 0) {
+    if (isPlayerTurn) {
     //ask player if they'd liek to fight or skip using fightOrSkip function
-    if (fightOrSkip()) {
+     if (fightOrSkip()) {
       //if true, leave fight by breaking loop
       break;
     }
@@ -119,9 +126,10 @@ var fight = function(enemy) {
       // leave while() loop since enemy is dead
       break;
     } else {
-      window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
-    }
-
+      window.alert(enemy.name + ' still has ' + enemy.health + ' health left.'); 
+  } 
+} else {
+    
     // remove players's health by subtracting the amount set in the enemyAttack variable
     var damage = randomNumber(enemy.attack - 3, enemy.attack);
 
@@ -140,15 +148,16 @@ var fight = function(enemy) {
       window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
     }
   }
+   // switch turn order for next round
+   isPlayerTurn = !isPlayerTurn;
+  }
 };
 
 // function to start a new game
-var startGame = function() {
-  // reset player stats
   var startGame = function() {
     //reset player stats
     playerInfo.reset();
-  }
+  
 
   // fight each enemy robot by looping over them and fighting them one at a time
   for (var i = 0; i < enemyInfo.length; i++) {
@@ -220,7 +229,7 @@ var shop = function() {
   // use switch case to carry out action
   switch (shopOptionPrompt) {
     case 1:
-      playerInfo.Info.refillHealth();
+      playerInfo.refillHealth();
       break;
     case 2:
       playerInfo.upgradeAttack();
